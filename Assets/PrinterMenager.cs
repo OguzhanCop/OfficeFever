@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class PrinterMenager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public List<GameObject> paperList = new List<GameObject>();
+    public GameObject paperPrefab;
+    public Transform exitPoint;
+    bool isWorking;
     void Start()
     {
-        
+        StartCoroutine(PrintPaper());
+
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator PrintPaper()
     {
-        
+        while(true)
+        {
+            float paperCount = paperList.Count;
+            if (isWorking == true)
+            {                
+                GameObject temp = Instantiate(paperPrefab);
+                temp.transform.position = new Vector3(exitPoint.position.x, paperCount / 20, exitPoint.position.z);
+                paperList.Add(temp);
+               
+            }            
+            if (paperList.Count >= 30)
+            {
+                isWorking = false;
+
+            }
+            else
+                isWorking = true;
+            yield return new WaitForSeconds(0.1f);
+
+        }
+
+       
     }
 }
